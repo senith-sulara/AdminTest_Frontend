@@ -1,0 +1,38 @@
+.tbl {
+    width: 85%;
+    margin-top: 50px;
+    margin: auto;
+  }
+  
+  #h12 {
+    /* align-items: center;
+    font-size: 30px;
+    color: rgb(0, 0, 0); */
+    font-family: "-apple-system", BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    display: block;
+    padding-bottom: 1.1rem;
+    color: #122344;
+    font-size: 2.05rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-align: left;
+    margin-left: 150px;
+    margin-bottom: 0.25rem;
+  }
+  #btnAdd {
+    margin-bottom: 10px;
+    top: 200;
+    left: 5px;
+    /* background: linear-gradient(45deg, #030b58 30%, #021633 90%); */
+    background: #001EB9;
+    border-radius: 0;
+    border: 0;
+    color: "white";
+    height: 48;
+    width: 200px;
+    padding: "0 30px";
+    box-shadow: "0 3px 5px 2px rgba(255, 105, 135, .3)";
+    z-index: 2;
+  }
