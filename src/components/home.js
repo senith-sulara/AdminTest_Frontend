@@ -1,231 +1,227 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { API_URL } from "../utils/constants.js";
+import React, { useState, useEffect, useContext } from "react";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import CreateIcon from "@mui/icons-material/Create";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { NavLink } from "react-router-dom";
+import { adddata, deldata } from "./context/ContextProvider.js";
+import { updatedata } from "./context/ContextProvider.js";
+import { IconButton } from "@mui/material";
 import "./home.css";
-import MaterialTable from "material-table";
-import Button from "@material-ui/core/Button";
-import { Grid } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
+import StarIcon from "@mui/icons-material/Star";
+import TextField from "@material-ui/core/TextField";
+import useBookmarks from "./favorite.js";
+import Swal from "sweetalert2";
+import axios from "axios";
+const Home = () => {
+  const [getuserdata, setUserdata] = useState([]);
+  console.log(getuserdata);
 
-const ProductAdmin = (props) => {
-  const { useState } = React;
-  const [data, setData] = useState([]);
-  const [errorMsg, setErrorMsg] = useState([]);
-  const [iserror, setIserror] = useState(false);
-  const [successMsg, setSuccessMsg] = useState([]);
-  const [issucc, setIssucc] = useState(false);
+  const { udata, setUdata } = useContext(adddata);
 
-  //get all book details
-  useEffect(() => {
-    const getFileList = async () => {
-      try {
-        const { data } = await axios.get(`http://localhost:8070/products/getAllProducts`, {
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem('token')}`,
-        //   },
-        });
-        setErrorMsg("");
-        setData(data);
-        console.log(data);
-      } catch (error) {
-        error.response && setErrorMsg(error.response.data);
-        console.log(error);
-      }
-    };
+  const { updata, setUPdata } = useContext(updatedata);
 
-    getFileList();
+  const { dltdata, setDLTdata } = useContext(deldata);
 
+  const getdata = async () => {
+    const res = await fetch("http://localhost:8070/products/getAllProducts", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem('TOKEN')}`,
+      },
+    });
+
+    const data = await res.json();
     console.log(data);
-  }, []);
 
-  const [columns, setColumns] = useState([
-    {
-      title: "Image",
-      field: "file",
-      render: (rowData) => (
-        <img
-          style={{ height: 50, width: 50, borderRadius: "10%" }}
-        //   src={asset(`http://localhost:8070/${rowData.image_path}`)}
-        // src={require('http://localhost:8070/${rowData.file}')}
-          src={ (rowData.images) }
-
-        />
-      ),
-    },
-    { title: "SKU", field: "SKU" },
-    { title: "Quantity", field: "Quantity" },
-    { title: "Product Name", field: "ProductName" },
-    { title: "Description", field: "Description" },
-  ]);
-
-  /////////////////////////update rows
-  const api = axios.create({
-    baseURL: `http://localhost:8070`,
-  });
-
-  const handleRowUpdate = (newData, oldData, resolve) => {
-    //validation
-    let errorList = [];
-    if (newData.SKU === "") {
-      errorList.push("Please enter SKU");
-    }
-    if (newData.ProductName === "") {
-      errorList.push("Please enter ProductName");
-    }
-    if (newData.Quantity === "") {
-      errorList.push("Please enter Quantity");
-    }
-    if (newData.Description === "") {
-      errorList.push("Please enter Description");
-    }
-
-    if (errorList.length < 1) {
-      api
-        .put("/products/" + newData._id, newData, {
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem('token')}`,
-        //   },
-        })
-        .then((res) => {
-          const dataUpdate = [...data];
-          const index = oldData.tableData.id;
-          dataUpdate[index] = newData;
-          setData([...dataUpdate]);
-          resolve();
-          setIserror(false);
-        })
-        .catch((error) => {
-          setErrorMsg(["Update failed! Server error"]);
-          setIserror(true);
-          resolve();
-        });
+    if (res.status === 422 || !data) {
+      console.log("error ");
     } else {
-      setErrorMsg(errorList);
-      setIserror(true);
-      resolve();
+      setUserdata(data);
+      console.log("get data");
     }
   };
 
-  ////////////Delete Row
+  useEffect(() => {
+    getdata();
+  }, []);
 
-  const handleRowDelete = (oldData, resolve) => {
-    api
-      .delete("/products/" + oldData._id, {
-        // headers: {
-        //   Authorization: `Bearer ${localStorage.getItem('token')}`,
-        // },
-      })
-      .then((res) => {
-        const dataDelete = [...data];
-        const index = oldData.tableData.id;
-        dataDelete.splice(index, 1);
-        setData([...dataDelete]);
-        resolve();
-        setSuccessMsg(["Delete success"]);
-        setIssucc(true);
-      })
-      .catch((error) => {
-        setErrorMsg(["Delete failed! Server error"]);
-        setIserror(true);
-        resolve();
-      });
+  const deleteuser = async (id) => {
+    const res2 = await fetch(`http://localhost:8070/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem('TOKEN')}`,
+      },
+    });
+
+    const deletedata = await res2.json();
+    console.log(deletedata);
+
+    if (res2.status === 422 || !deletedata) {
+      console.log("error");
+    } else {
+      console.log("user deleted");
+      setDLTdata(deletedata);
+      getdata();
+    }
+  };
+
+  const [bookmarksOnly, setBookmarksOnly] = useState(false);
+  const [bookmarks, toggleBookmark] = useBookmarks();
+
+  const changeBookMarksOnly = (e) => {
+    setBookmarksOnly(e.target.onClick);
+  };
+  const favorite = async () => {
+    setUserdata(
+      getuserdata.filter((s) => (bookmarksOnly ? bookmarks.includes(s._id) : s))
+    );
+  };
+
+  //  const addToCart = (id, productId, quantity) => dispatch => {
+  //     axios.post(`/products/addtoFave/${id}`, {productId, quantity})
+  //         .then(res => dispatch({
+  //             payload: res.data
+  //         }))
+  //         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+  // }
+
+  // const handleClose = (event, reason) => {
+  //   if (reason === "clickaway") {
+  //     return;
+  //   }
+
+  //   setOpen(false);
+  // };
+
+  const deleteProducts = (id) => {
+    // e.preventDefault();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will not be able to undo this action if you proceed!",
+      icon: "warning",
+      // dangerMode: true,
+      showCancelButton: true,
+      confirmButtonColor: "#001eb9",
+      cancelButtonColor: "#d33",
+      iconColor:"red",
+      confirmButtonText: "Delete",
+      reverseButtons: true
+    }).then((willDelete) => {
+      if (willDelete.isConfirmed) {
+        axios.delete(`http://localhost:8070/products/${id}`).then((res) => {
+          getdata();
+          Swal.fire({
+            title: "Done!",
+            text: "product has been deleted!",
+            icon: "success",
+            timer: 2000,
+            button: false,
+          });
+        });
+      }
+    });
   };
 
   return (
-    <div>
-      <br />
-      <br />
-      <h1 id="h12" align="left">
-        PRODUCTS
-      </h1>
-      <div className="tbl">
-        <div>
-          {iserror && (
-            <Alert severity="error">
-              {errorMsg.map((msg, i) => {
-                return <div key={i}>{msg}</div>;
+    <>
+      <div className="row"></div>
+      <div className="mt-5">
+        <div className="container">
+          <div className="mb-3 col-lg-6 col-md-6 col-12">
+            <label className="header1">PRODUCTS</label>
+          </div>
+          <div className="row">
+            <div className="col">
+              {/* <div className="add_btn mt-2 mb-2"> */}
+              <input
+                type="text"
+                value={""}
+                onChange={{}}
+                name="Search"
+                class="form-control"
+                id="searchbar"
+              />
+            </div>
+            <div className="col">
+              <button type="searchbtn" onClick={{}} id="searchbtn">
+                Search
+              </button>
+            </div>
+            <div className="col col-lg-2">
+              <NavLink to="/addproduct" className="btn btn-primary" id="addbtn">
+                New Product
+              </NavLink>
+              <IconButton id="starbtn">
+                <StarIcon />
+              </IconButton>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr className="table-light">
+                <th scope="col">SKU</th>
+                <th scope="col">IMAGE</th>
+                <th scope="col">PRODUCT NAME</th>
+                <th scope="col">PRICE</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {getuserdata.map((element, id) => {
+                return (
+                  <>
+                    <tr>
+                      {/* <th scope="row">{id + 1}</th> */}
+                      <td>{element.SKU}</td>
+                      <td>
+                        <img
+                          style={{ height: 50, width: 50, borderRadius: "10%" }}
+                          src={element.Images}
+                          alt=""
+                        />
+                      </td>
+                      <td>{element.ProductName}</td>
+                      <td>{'$'}{element.Price}</td>
+                      <td id="actionbtn">
+                        <NavLink to={`/viewproduct/${element._id}`}>
+                          {" "}
+                          <button className="btn" id="icodel">
+                            <RemoveRedEyeIcon />
+                          </button>
+                        </NavLink>
+                        <NavLink to={`/updateproduct/${element._id}`}>
+                          {" "}
+                          <button className="btn" id="icodel">
+                            <CreateIcon />
+                          </button>
+                        </NavLink>
+                        <button
+                          className="btn"
+                          id="icodel"
+                          onClick={() => deleteProducts(element._id)}
+                        >
+                          <DeleteOutlineIcon />
+                        </button>
+                        <button
+                          className="btn"
+                          id="icodel"
+                          onClick={toggleBookmark(element._id)}
+                        >
+                          <StarIcon />
+                        </button>
+                      </td>
+                    </tr>
+                  </>
+                );
               })}
-            </Alert>
-          )}
-
-          {issucc && (
-            <Alert severity="success">
-              {successMsg.map((msg, i) => {
-                return <div key={i}>{msg}</div>;
-              })}
-            </Alert>
-          )}
+            </tbody>
+          </table>
         </div>
-
-        <MaterialTable
-          title={
-            ''
-          }
-          columns={columns}
-          data={data}
-          icons={{
-            Add: props => (
-              <Button
-              id="btnAdd"
-              variant="contained"
-              color="primary"
-              href="/insertBook"
-            >
-              Add new Book
-            </Button>
-            ),
-          }}
-          // editable={{
-          //   onRowUpdate: (newData, oldData) =>
-          //     new Promise((resolve, reject) => {
-          //       handleRowUpdate(newData, oldData, resolve);
-          //     }),
-
-          //   onRowDelete: (oldData) =>
-          //     new Promise((resolve, reject) => {
-          //       handleRowDelete(oldData, resolve);
-          //     }),
-          // }}
-          options={{
-            headerStyle: {
-              backgroundColor: "rgba(8, 9, 80, 0.363)",
-              color: "rgba(0, 0, 0)",
-            },
-            actionsColumnIndex: -1,
-            searchFieldAlignment: "left",
-            searchFieldStyle: {
-              borderRadius: "30px",
-              disableUnderline: true,
-              border: "1px solid #707070",
-            }
-          }}
-          actions={[
-            {
-              icon: 'delete',
-              tooltip: 'Delete User',
-              onClick: (event, oldData) => new Promise((resolve, reject) => {
-                      handleRowDelete(oldData, resolve);
-                    }),
-            },
-            {
-              icon: 'edit',
-              tooltip: 'Edit User',
-              onClick: (event, rowData) => alert('You are editing ' + rowData.name)
-            },
-            {
-              icon: 'star',
-              iconProps: { color: "#01579b"  },
-              tooltip: 'Favorite',
-              
-              onClick: (event, rowData) => {
-                // Do save operation
-              }
-            }
-          ]}
-        />
       </div>
-    </div>
+    </>
   );
 };
 
-export default ProductAdmin;
+export default Home;

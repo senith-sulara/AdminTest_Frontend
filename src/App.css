@@ -36,3 +36,173 @@
     transform: rotate(360deg);
   }
 }
+
+.add_btn{
+  text-align: right;
+}
+
+#addbtn{
+  background-color: #001EB9;
+  align-content: end;
+  margin-left: auto;
+}
+
+.container{
+  overflow: auto;
+}
+
+.left_view h3{
+  font-size: 21px;
+}
+
+.left_view p{
+  font-weight: 600;
+}
+
+.left_view span{
+  font-weight: 400;
+}
+
+.right_view p{
+  font-weight: 600;
+}
+
+
+.right_view span{
+  font-weight: 400;
+}
+
+#starbtn{
+  color: #001EB9;
+  border-style: dashed;
+}
+
+#icodel{
+  color: #001EB9;
+}
+
+#actionbtn{
+  margin-left: 120px;
+}
+
+.header1{
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.headersub{
+  font-size: 30px;
+  color: #001EB9;
+}
+
+.updatetbtn{
+  background-color: #001EB9;
+  width: 200px;
+  height: auto;
+  color: white;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+#btncontent{
+  padding-left: 300px;
+}
+
+#searchbar{
+  
+  background-color: #F7F7F7;
+  border: none; /* <-- This thing here */
+      border:solid 1px #ccc;
+      border-radius: 10px;
+}
+
+.row{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.outcard2 {
+  padding: 25px;
+  margin: auto;
+  width: 30%;
+  box-shadow: 0 1px 2px 1px #ddd;
+  border-radius: 10px;
+  border: 2px solid rgb(164, 10, 169);
+}
+
+.card {
+  box-shadow: 0 1px 2px 1px #ddd;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #eee;
+  
+}
+
+.inputs {
+  width: 93%;
+  color: #444;
+  border: 1px solid #e69df6;
+  border-radius: 10px;
+  padding: 10px 10px;
+}
+
+.btns {
+  background-color: #4a028a;
+  color: #fff;
+  width: 50%;
+  margin: auto;
+  padding: 10px 10px;
+  border-radius: 3px;
+  border: none;
+}
+
+.btnso{
+  background-color: #4a028a;
+  color: #fff;
+  width: 50%;
+  margin: auto;
+  margin-left: 23%;
+  margin-top: 10px;
+  padding: 10px 10px;
+  border-radius: 3px;
+  border: none;
+  align-items: center;
+}
+
+.nav {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+
+.logbtn{
+  margin: 0;
+  list-style: none;
+  color: inherit;
+  border: 0px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.logbtn:hover {
+  background-color: #001eb9;
+  color: #ffffff;
+}
+
+.adlogo{
+  margin-right: 50px;
+}
+
+#searchbtn{
+  background-color: #001eb9;
+  color: #ffffff;
+  width: 100px;
+  height: 40px;
+  border-radius: 30px;
+  border: none;
+}
