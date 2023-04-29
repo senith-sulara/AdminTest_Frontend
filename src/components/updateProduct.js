@@ -3,6 +3,10 @@ import { NavLink, useParams, useNavigate } from "react-router-dom";
 import { updatedata } from "./context/ContextProvider";
 import { API_URL } from "../utils/constants";
 
+/**
+ * 
+ * @returns update product details
+ */
 const UpdateProduct = () => {
   const { updata, setUPdata } = useContext(updatedata);
 
@@ -154,11 +158,6 @@ const UpdateProduct = () => {
               class="form-control"
               cols="25" rows="5"
             />
-          
-          {/* <div class="mb-3 col-lg-12 col-md-12 col-12">
-                        <label for="exampleInputPassword1" class="form-label">Description</label>
-                        <textarea name="desc" value={state.desc} onChange={setdata} className="form-control" id="" cols="30" rows="5"></textarea>
-                    </div> */}
 
           <button type="submit" onClick={updateProduct} className="updatetbtn">
             Submit

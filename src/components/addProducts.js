@@ -73,22 +73,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialState = {
-  SKU: "",
-  ProductName: "",
-  Price: "",
-  Description: "",
-  Quantity: "",
-  Images: "",
-  errors: {
-    SKU: "",
-    ProductName: "",
-    Price: "",
-    Description: "",
-    Quantity: "",
-  },
-};
-
 function PaperComponent(props) {
   return (
     <Draggable
@@ -174,7 +158,7 @@ const AddProducts = (props) => {
             await axios.post(`${API_URL}/products/insert`, formData, {
               headers: {
                 "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${localStorage.getItem('TOKEN')}`,
+                Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
               },
             });
             setSuccessMsg("upload Success");
@@ -195,11 +179,6 @@ const AddProducts = (props) => {
       error.response && setErrorMsg(error.response.data);
       // setOpenErr(true);
     }
-  };
-
-  //clear records
-  const reload = () => {
-    setState(initialState);
   };
 
   //validations
@@ -223,8 +202,7 @@ const AddProducts = (props) => {
           value.length < 0 ? "Product Name can not be Empty!" : "";
         break;
       case "Price":
-        errors.Price =
-          value.length < 4 ? "Price can not be Empty!" : "";
+        errors.Price = value.length < 4 ? "Price can not be Empty!" : "";
         break;
       default:
         break;

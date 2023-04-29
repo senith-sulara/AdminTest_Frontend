@@ -22,12 +22,13 @@ const Home = () => {
 
   const { dltdata, setDLTdata } = useContext(deldata);
 
+  //Retrive data from server
   const getdata = async () => {
     const res = await fetch("http://localhost:8070/products/getAllProducts", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem('TOKEN')}`,
+        Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
       },
     });
 
@@ -46,27 +47,7 @@ const Home = () => {
     getdata();
   }, []);
 
-  const deleteuser = async (id) => {
-    const res2 = await fetch(`http://localhost:8070/products/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem('TOKEN')}`,
-      },
-    });
-
-    const deletedata = await res2.json();
-    console.log(deletedata);
-
-    if (res2.status === 422 || !deletedata) {
-      console.log("error");
-    } else {
-      console.log("user deleted");
-      setDLTdata(deletedata);
-      getdata();
-    }
-  };
-
+  // Add to favorite localstorage
   const [bookmarksOnly, setBookmarksOnly] = useState(false);
   const [bookmarks, toggleBookmark] = useBookmarks();
 
@@ -95,6 +76,7 @@ const Home = () => {
   //   setOpen(false);
   // };
 
+  //delete products
   const deleteProducts = (id) => {
     // e.preventDefault();
     Swal.fire({
@@ -105,9 +87,9 @@ const Home = () => {
       showCancelButton: true,
       confirmButtonColor: "#001eb9",
       cancelButtonColor: "#d33",
-      iconColor:"red",
+      iconColor: "red",
       confirmButtonText: "Delete",
-      reverseButtons: true
+      reverseButtons: true,
     }).then((willDelete) => {
       if (willDelete.isConfirmed) {
         axios.delete(`http://localhost:8070/products/${id}`).then((res) => {
@@ -183,7 +165,10 @@ const Home = () => {
                         />
                       </td>
                       <td>{element.ProductName}</td>
-                      <td>{'$'}{element.Price}</td>
+                      <td>
+                        {"$"}
+                        {element.Price}
+                      </td>
                       <td id="actionbtn">
                         <NavLink to={`/viewproduct/${element._id}`}>
                           {" "}

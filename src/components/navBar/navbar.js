@@ -4,8 +4,11 @@ import logo from "../../images/adminlogo.png";
 export default function Navbar() {
   let history = useNavigate();
   const [user, setUser] = useState(null);
- 
-
+/*
+*
+* admin navigation bar
+* IF token is not null nav bar will display
+*/
   useEffect(() => {
     const getUserData = () => {
       setUser(JSON.parse(localStorage.getItem("TOKEN")));
@@ -13,37 +16,28 @@ export default function Navbar() {
     getUserData();
   }, []);
 
-  
   const logOut = () => {
-    history('/')
-    localStorage.clear()
+    history("/");
+    localStorage.clear();
   };
   return (
     <nav className="nav">
-     
-      {localStorage.getItem("TOKEN") ? 
-          <> 
-            <ul>
-             
-            </ul>
-            <ul>
-            
-            <button className="logbtn"
-              onClick={logOut}
-            >
+      {localStorage.getItem("TOKEN") ? (
+        <>
+          <ul>
+            <button className="logbtn" onClick={logOut}>
               {" "}
               ADMIN{" "}
             </button>
-            <span className="adlogo"> <img src={logo} alt="" width={30} height={30} /> </span>
-            </ul>
-        </> 
-       : 
-          <>
-          
-         
+            <span className="adlogo">
+              {" "}
+              <img src={logo} alt="" width={30} height={30} />{" "}
+            </span>
+          </ul>
         </>
-      }
-
+      ) : (
+        <></>
+      )}
     </nav>
   );
 }

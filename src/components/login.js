@@ -1,7 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-
+/**
+ *
+ * Simple Login page to handele auth
+ *
+ **/
 function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -62,11 +66,13 @@ function Signin() {
             />{" "}
             <br /> <br />
           </div>
-        </div><div className="row">
-        <button onClick={handleSubmit} className="btns">
-          {" "}
-          Login{" "}
-        </button></div>
+        </div>
+        <div className="row">
+          <button onClick={handleSubmit} className="btns">
+            {" "}
+            Login{" "}
+          </button>
+        </div>
         <Link
           style={{ textAlign: "center", display: "block", marginTop: "5px" }}
           to={"/forget-pass"}
@@ -81,7 +87,6 @@ function Signin() {
           {" "}
           SIGN UP{" "}
         </Link>
-        
       </div>
     </>
   );

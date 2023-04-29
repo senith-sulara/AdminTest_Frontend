@@ -10,6 +10,12 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { NavLink, useParams, useNavigate } from "react-router-dom";
 import { API_URL } from "../utils/constants";
 
+/**
+ *
+ * @returns Display product details
+ *
+ *
+ */
 const ProductDeatils = () => {
   const [getProductData, setProductData] = useState([]);
   console.log(getProductData);
